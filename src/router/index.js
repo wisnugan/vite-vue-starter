@@ -1,29 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
-import DefaultLayout from "@/layouts/DefaultLayout.vue";
-import Login from "@/views/auth/LoginView.vue";
+import { authStore } from "../stores/auth";
 
-const routes = [];
-
-routes.push({
-  path: "/",
-  redirect: "/login",
-});
-
-routes.push({
-  path: "/",
-  component: DefaultLayout,
-  children: [
-    {
-      path: "login",
-      name: "Login",
-      component: Login,
-    },
-  ],
-});
+import routes from "./routes.js";
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+const waitForStorageToBeReady = async (to) => {
+  const auth = await authStore();
+
+  if (to.meta.auth && !auth.loggedIn) return "/login";
+};
+
+router.beforeEach(waitForStorageToBeReady);
 
 export default router;

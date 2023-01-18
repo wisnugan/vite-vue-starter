@@ -1,37 +1,41 @@
 import { defineStore } from "pinia";
+import api from "../services/api";
 
-export const useCatalog = defineStore("catalog-store", {
+export const authStore = defineStore("authStore", {
   state: () => {
     return {
-      newArrivals: [],
+      user: {},
+      loggedIn: false,
       fetching: false,
     };
   },
 
   getters: {
-    results(state) {
-      return state.newArrivals;
-    },
-
     isFetching(state) {
       return state.fetching;
     },
   },
 
   actions: {
-    async fetchUsers() {
+    async signin(params) {
       this.fetching = true;
+      this.loggedIn = false;
 
       try {
-        const data = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        );
-        this.users = data.data;
+        const res = await api.signin(params);
+
+        this.user = res.data ? res.data.data : {};
+        this.loggedIn = true;
       } catch (error) {
-        alert(error);
-        console.log(error);
+        console.log(error.message);
       }
+
       this.fetching = false;
+      return this.loggedIn;
     },
+  },
+
+  persist: {
+    enabled: true,
   },
 });

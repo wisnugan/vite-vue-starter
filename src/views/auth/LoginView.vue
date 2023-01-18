@@ -27,6 +27,7 @@
 
               <input
                 id="email"
+                v-model="email"
                 type="email"
                 name="email"
                 class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
@@ -51,6 +52,7 @@
 
               <input
                 id="password"
+                v-model="password"
                 type="password"
                 name="password"
                 class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
@@ -63,9 +65,10 @@
             <button
               type="submit"
               class="flex mt-2 items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 w-full transition duration-150 ease-in"
+              @click="toLogin"
             >
-              <span class="mr-2 uppercase">Sign In</span>
-              <span>
+              <span v-if="!fetching" class="mr-2 uppercase">Sign In</span>
+              <span v-if="!fetching">
                 <svg
                   class="h-6 w-6"
                   fill="none"
@@ -103,5 +106,24 @@
 </template>
 
 <script setup>
-//
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { authStore } from "../../stores/auth";
+import { useRouter } from "vue-router";
+
+const email = ref("");
+const password = ref("");
+
+const { fetching } = storeToRefs(authStore());
+const { signin } = authStore();
+const router = useRouter();
+
+async function toLogin() {
+  let res = await signin({ email: email.value, password: password.value });
+
+  if (res)
+    router.push({
+      name: "Dashboard",
+    });
+}
 </script>
