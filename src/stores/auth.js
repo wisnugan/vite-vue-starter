@@ -5,6 +5,7 @@ export const authStore = defineStore("authStore", {
   state: () => {
     return {
       user: {},
+      accessToken: null,
       loggedIn: false,
       fetching: false,
     };
@@ -23,19 +24,42 @@ export const authStore = defineStore("authStore", {
 
       try {
         const res = await api.signin(params);
-
-        this.user = res.data ? res.data.data : {};
+        this.user = res.data.data;
+        this.accessToken = res.data.data.access_token;
         this.loggedIn = true;
       } catch (error) {
         console.log(error.message);
       }
 
       this.fetching = false;
-      return this.loggedIn;
+    },
+    async me() {
+      try {
+        const res = await api.me();
+        this.user = res.data.data;
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+    async signout() {
+      try {
+        await api.signout();
+      } catch (error) {
+        console.log(error.message);
+      }
+
+      this.loggedIn = false;
+      this.accessToken = null;
+      this.user = {};
     },
   },
 
   persist: {
     enabled: true,
+
+    strategies: [
+      { key: "auth", storage: localStorage, paths: ["accessToken"] },
+      { key: "user", storage: localStorage, paths: ["loggedIn", "user"] },
+    ],
   },
 });

@@ -1,5 +1,5 @@
 import axios from "axios";
-console.log(import.meta.env.VITE_BASE_URL);
+import { authStore } from "../stores/auth";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -11,9 +11,12 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const token = null;
+    const token = localStorage.getItem("auth")
+      ? JSON.parse(localStorage.getItem("auth")).accessToken
+      : null;
+
     if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -27,6 +30,8 @@ instance.interceptors.response.use(
     return res;
   },
   async (err) => {
+    const { signout, loggedIn } = authStore();
+
     const originalConfig = err.config;
 
     if (err.response && err.response.data.status_code)
@@ -34,13 +39,14 @@ instance.interceptors.response.use(
         "Error: ",
         err.response.data ? err.response.data.message : "Something went wrong"
       );
-    else console.log("Terjadi kesalahan sistem");
+    // else console.log("Terjadi kesalahan sistem");
 
     if (
-      originalConfig.url !== "/token" &&
+      originalConfig.url !== "/api_cg/auth/signin" &&
+      err.response &&
       err.response.data.status_code == 401
     ) {
-      // store.dispatch("auth/LOGOUT");
+      if (loggedIn) signout();
     }
     return Promise.reject(err);
   }

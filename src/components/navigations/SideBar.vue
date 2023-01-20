@@ -153,6 +153,7 @@
     <div class="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
       <button
         class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group"
+        @click="toLogout"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -173,3 +174,16 @@
     </div>
   </aside>
 </template>
+
+<script setup>
+import { authStore } from "../../stores/auth";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { signout } = authStore();
+
+async function toLogout() {
+  await signout();
+  router.push({ name: "Login" });
+}
+</script>
