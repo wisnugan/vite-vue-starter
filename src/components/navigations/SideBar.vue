@@ -18,13 +18,17 @@
         alt=""
         class="w-20 h-20 m-auto rounded-full object-cover lg:w-28 lg:h-28"
       />
-      <h5 class="hidden mt-4 text-xl font-semibold lg:block">
-        Cynthia J. Watts
+      <h5 class="mt-4 text-xl font-semibold lg:block">
+        {{ user && user.userable ? user.userable.name : null }}
       </h5>
-      <span class="hidden lg:block">Admin</span>
+      <span class="lg:block">
+        {{ user && user.role ? user.role.name : null }}
+      </span>
     </div>
 
     <div class="px-2 space-y-1 mt-8">
+      <div class="border-t mx-4"></div>
+
       <button
         class="px-4 py-2 w-full flex items-center space-x-4 rounded-md text-gray-600 group hover:bg-gradient-to-r hover:from-gray-400 hover:to-gray-300"
         @click="toPage('Dashboard')"
@@ -181,7 +185,7 @@ const menu = useMenuStore();
 const { hideSide } = useMenuStore();
 
 const router = useRouter();
-const { signout } = useAuthStore();
+const { signout, user } = useAuthStore();
 
 async function toLogout() {
   await signout();
