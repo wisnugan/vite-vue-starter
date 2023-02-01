@@ -105,7 +105,7 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { authStore } from "../../stores/auth";
+import { useAuthStore } from "../../stores/auth";
 import { useRouter } from "vue-router";
 
 import { onMounted } from "vue";
@@ -113,8 +113,8 @@ import { onMounted } from "vue";
 const email = ref("");
 const password = ref("");
 
-const { fetching, loggedIn } = storeToRefs(authStore());
-const { signin } = authStore();
+const { fetching, loggedIn } = storeToRefs(useAuthStore());
+const { signin } = useAuthStore();
 const router = useRouter();
 
 onMounted(() => {

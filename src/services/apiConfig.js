@@ -1,5 +1,5 @@
 import axios from "axios";
-import { authStore } from "../stores/auth";
+import { useAuthStore } from "../stores/auth";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     return res;
   },
   async (err) => {
-    const { signout, loggedIn } = authStore();
+    const { signout, loggedIn } = useAuthStore();
 
     const originalConfig = err.config;
 

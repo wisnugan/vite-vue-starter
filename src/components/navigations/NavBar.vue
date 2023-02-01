@@ -1,10 +1,17 @@
+<script setup>
+import { useMenuStore } from "../../stores/menu";
+const menu = useMenuStore();
+</script>
+
 <template>
-  <div class="sticky z-10 top-0 h-12 border-b bg-white lg:py-2">
+  <div
+    class="fixed z-30 w-full backdrop-blur-sm h-12 border-b bg-white lg:py-2"
+  >
     <div class="px-3 flex items-center justify-between space-x-4 2xl:container">
       <h5 hidden class="text-2xl text-gray-600 font-medium lg:block">
         Dashboard
       </h5>
-      <button class="w-8 h-12 border-r lg:hidden">
+      <button class="w-8 h-12 border-r lg:hidden" @click="menu.setSidebar">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 my-auto"

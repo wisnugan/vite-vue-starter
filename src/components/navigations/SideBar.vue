@@ -1,6 +1,12 @@
 <template>
   <aside
-    class="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]"
+    ref="sidebar"
+    class="fixed z-20 h-full top-0 left-0 pt-12 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-100"
+    :class="
+      menu.sidebar
+        ? 'flex bg-white xs:backdrop-blur-sm lg:backdrop-blur-none'
+        : 'hidden'
+    "
   >
     <div>
       <div class="-mx-6 px-6 py-4">
@@ -71,7 +77,7 @@
                 d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"
               />
             </svg>
-            <span class="group-hover:text-gray-700">Categories</span>
+            <span class="group-hover:text-gray-700">Customers</span>
           </a>
         </li>
         <li>
@@ -96,7 +102,7 @@
                 d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z"
               />
             </svg>
-            <span class="group-hover:text-gray-700">Reports</span>
+            <span class="group-hover:text-gray-700">Tickets</span>
           </a>
         </li>
         <li>
@@ -119,7 +125,7 @@
                 d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"
               />
             </svg>
-            <span class="group-hover:text-gray-700">Other data</span>
+            <span class="group-hover:text-gray-700">Instruments</span>
           </a>
         </li>
         <li>
@@ -144,7 +150,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-            <span class="group-hover:text-gray-700">Finance</span>
+            <span class="group-hover:text-gray-700">Users</span>
           </a>
         </li>
       </ul>
@@ -176,11 +182,18 @@
 </template>
 
 <script setup>
-import { authStore } from "../../stores/auth";
+import { useAuthStore } from "../../stores/auth";
 import { useRouter } from "vue-router";
+import { defineProps } from "vue";
+import { useMenuStore } from "../../stores/menu";
+
+const props = defineProps(["iw"]);
+const menu = useMenuStore();
 
 const router = useRouter();
-const { signout } = authStore();
+const { signout } = useAuthStore();
+
+console.log(props.iw);
 
 async function toLogout() {
   await signout();

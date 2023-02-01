@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { authStore } from "../stores/auth";
+import { useAuthStore } from "../stores/auth";
 
 import routes from "./routes.js";
 
@@ -9,7 +9,7 @@ const router = createRouter({
 });
 
 const waitForStorageToBeReady = async (to) => {
-  const auth = await authStore();
+  const auth = await useAuthStore();
 
   if (to.meta.auth && !auth.loggedIn) return "/login";
 };
