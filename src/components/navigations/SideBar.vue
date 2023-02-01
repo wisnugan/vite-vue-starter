@@ -170,14 +170,18 @@ import { useRouter } from "vue-router";
 import { defineProps } from "vue";
 import { useMenuStore } from "../../stores/menu";
 
-const props = defineProps(["iw"]);
+const props = defineProps({
+  iw: {
+    type: Number,
+    default: 0,
+  },
+});
+
 const menu = useMenuStore();
 const { hideSide } = useMenuStore();
 
 const router = useRouter();
 const { signout } = useAuthStore();
-
-console.log(props.iw);
 
 async function toLogout() {
   await signout();
@@ -186,7 +190,7 @@ async function toLogout() {
 }
 
 function toPage(val) {
-  hideSide();
+  if (props.iw <= 1024) hideSide();
   router.push({ name: val });
 }
 </script>
