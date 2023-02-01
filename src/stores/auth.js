@@ -36,6 +36,7 @@ export const useAuthStore = defineStore("useAuthStore", {
     async me() {
       try {
         const res = await api.me();
+
         this.user = res.data.data;
       } catch (error) {
         console.log(error.message);

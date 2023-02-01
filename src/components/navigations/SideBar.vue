@@ -8,22 +8,12 @@
         : 'hidden'
     "
   >
-    <div class="mx-auto px-6 py-4">
-      <span>Customer Group</span>
-    </div>
-
-    <div class="mt-2 text-center">
+    <div class="mt-6 text-center">
       <img
         src="https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp"
         alt=""
         class="w-20 h-20 m-auto rounded-full object-cover lg:w-28 lg:h-28"
       />
-      <h5 class="mt-4 text-xl font-semibold lg:block">
-        {{ user && user.userable ? user.userable.name : null }}
-      </h5>
-      <span class="lg:block">
-        {{ user && user.role ? user.role.name : null }}
-      </span>
     </div>
 
     <div class="px-2 space-y-1 mt-8">
@@ -185,7 +175,7 @@ const menu = useMenuStore();
 const { hideSide } = useMenuStore();
 
 const router = useRouter();
-const { signout, user } = useAuthStore();
+const { signout } = useAuthStore();
 
 async function toLogout() {
   await signout();

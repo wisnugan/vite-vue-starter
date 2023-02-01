@@ -18,6 +18,7 @@ export const useMenuStore = defineStore("useMenuStore", {
     setSidebar() {
       this.sidebar = !this.sidebar;
       if (this.sidebar) this.backdrop = true;
+      else this.backdrop = false;
     },
     hideSide() {
       this.sidebar = false;

@@ -28,7 +28,7 @@ onBeforeUnmount(() => {
 });
 
 async function getUser() {
-  await me();
+  me();
 
   if (!loggedIn.value) router.push({ name: "Login" });
 }
@@ -52,7 +52,7 @@ function windowResize() {
     <div class="flex overflow-hidden pt-14">
       <SideBar :iw="ww" />
       <div
-        class="bg-gray-900 opacity-60 fixed inset-0 z-10"
+        class="bg-gray-900 opacity-60 fixed inset-0 z-10 cursor-pointer"
         :class="menu.backdrop ? 'block lg:hidden' : 'hidden'"
         @click="hideSide"
       ></div>
